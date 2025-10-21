@@ -1,6 +1,7 @@
 import random
 import time
 
+#10,5,15,3,1,20,25,18
 
 class Node:
     # método construtor
@@ -8,7 +9,8 @@ class Node:
         self.valor = valor
         self.esquerda = None
         self.direita = None
-
+        self.altura = 1
+        
 
 class Arvore:
     def __init__(self):
@@ -65,36 +67,29 @@ class Arvore:
                 no_atual = no_atual.direita
         # Valor não existe na árvore
         return False
+    
+    def obter_altura(self, no):
+        if no is None:
+            return 0
+        return no.altura
+        
+      
+    def atualizar_altura(self, no):
+        altura_esquerda = self.obter_altura(no.esquerda)
+        altura_direita = self.obter_altura(no.direita)
+        no.altura = 1 + max(altura_esquerda, altura_direita)
+        
 
+    def obter_fator_balanceamento(self, no):
+        if no is None:
+            return 0
+        return self.obter_altura(no.esquerda) - self.obter_altura(no.direita)
+            
 
 if __name__ == "__main__":
-
-    random.seed(42)  # Reprodutibilidade
-    valores = [random.randint(1, 999) for _ in range(100)]
-    # print(f"valores {valores} tamanho {len(valores)}")
-
     # Instanciar a Árvore Binária
     arvore = Arvore()
 
-    inicio_arvore = time.perf_counter()
-    # Inserir valores na Árvore
-    for valor in valores:
+    sequencia = [ 10,5,15,3,1,20,25,18 ]
+    for valor in sequencia:
         arvore.inserir(valor)
-    print(f"tempo construção {time.perf_counter() - inicio_arvore:.6f}")
-
-    # Posso buscar um valor assim?
-    # Resposta: SIM
-    # print(f"Raiz da árvore {arvore.raiz.valor}")
-    # print(f"Valor da Esquerda da Raiz? {arvore.raiz.esquerda.valor}")
-    # print(f"Valor da Esquerda da Esquerda da Raiz? {arvore.raiz.esquerda.esquerda.valor}")
-
-    # Busca com método .buscar
-    random.seed(2025)
-    # Gerar 10 números entre 1 e 999
-    busca = [random.randint(1, 999) for _ in range(10)]
-
-    inicio_busca = time.perf_counter()
-    for n in busca:
-        resposta = arvore.buscar(n)
-        print(f"O valor {n} está na árvore? {resposta}")
-    print(f"tempo busca {time.perf_counter() - inicio_busca:.6f}")
