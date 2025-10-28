@@ -9,6 +9,7 @@ class Node:
         self.valor = valor
         self.esquerda = None
         self.direita = None
+        # Adicionar self.altura
         self.altura = 1
         
 
@@ -17,9 +18,14 @@ class Arvore:
         self.raiz = None
 
     def inserir(self, valor):
+
+        novo_no = Node(valor)
+
+        caminho = []
+
         # Raiz não existe!
         if self.raiz is None:
-            self.raiz = Node(valor)
+            self.raiz = novo_no
             # print(f"Criar a raiz com valor {valor}")
             return
 
@@ -27,26 +33,26 @@ class Arvore:
         no_atual = self.raiz
 
         while True:
+            # IMPORTANTE: Adiciona o nó atual ao caminho
+            caminho.append(no_atual)
+            
             # Se valor for menor que atual, olha para a esquerda do no_atual
             if valor < no_atual.valor:
                 if no_atual.esquerda is None:
-                    no_atual.esquerda = Node(valor)
+                    no_atual.esquerda = novo_no
                     break
                 else:
                     no_atual = no_atual.esquerda
-
             # Se valor for maior que atual, olha para a direita do no_atual
             elif valor > no_atual.valor:
                 if no_atual.direita is None:
-                    no_atual.direita = Node(valor)
+                    no_atual.direita = novo_no
                     break
                 else:
                     no_atual = no_atual.direita
-
-            # Se o valor é igual ao atual
+            # Se o valor é igual
             else:
-                # ignorar
-                break
+                return
 
     def buscar(self, valor):
         no_atual = self.raiz
